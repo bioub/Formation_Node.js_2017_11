@@ -18,6 +18,10 @@ function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
 }
 
+// 1 - Mettre tous les fonctions aléatoires dans un objet
+// avec la syntaxe object literal (ES6 method properties)
+// const entierAlea = random.getIntInclusive(0, 100);
+
 const readline = require('readline');
 
 const rl = readline.createInterface({
@@ -61,3 +65,17 @@ const jouer = () => {
 }
 
 jouer();
+
+// 2 - Créer une fonction constructeur / class Jeu
+// const jeu = new Jeu();
+// jeu.jouer();
+
+// 3 - Passer un objet au constructeur qui contiendra
+// les options de la classe (min et max)
+// const jeu = new Jeu({
+//   min: 10,
+//   max: 20,
+// });
+// jeu.jouer();
+
+// 4 - Prévoir des valeurs par défaut pour min et max
