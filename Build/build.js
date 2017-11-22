@@ -16,6 +16,8 @@
 // 4 - Copier le fichier src/index.html dans dist/index.html
 // en remplaçant les balises script de dev
 // par celle de prod (app.js)
+// readFile retourne un Buffer
+// Buffer -> string : buffer.toString()
 
 // 5 - Optionnel
 // Utiliser la bibliothèque uglify-es ou babili
@@ -25,6 +27,7 @@
 // Utiliser le module crypto de Node pour signer
 // le fichier app.js et remplacer son nom
 // par le checksum md5 (pour invalider le cache)
+// app.F4556Y4G445G454G.js
 // Voir https://gist.github.com/remarkablemark/ef52f3fb1c16cf7aaf8aae1fc81aceca
 
 
