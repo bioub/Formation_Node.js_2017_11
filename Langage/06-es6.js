@@ -2,13 +2,13 @@ var contactFactory = function (prenom) {
   return {
     prenom: prenom,
     hello: function() {
-      return 'Bonjour je m\'appelle ' + this.prenom;
+      return 'Bonjour je m\'appelle ' + this.prenom + ' !';
     },
   };
 };
 
 // En ES6
-// - const
+// - const / let
 // - Arrow functions =>
 // - Shortand property prenom: prenom -> prenom
 // - Method property : hello: function() {} -> hello()
@@ -19,6 +19,9 @@ const contactFactoryES6 = prenom => ({
     return `Bonjour je m'appelle ${this.prenom} !`;
   },
 });
+
+const c1 = contactFactoryES6('Romain');
+c1.hello();
 
 const Contact = function(prenom) {
   this._prenom = prenom;
@@ -40,4 +43,16 @@ class ContactES6 {
 
 console.log(typeof ContactES6); // function
 console.log(typeof ContactES6.prototype.hello); // function
+
+// REST Params
+// for ... of
+const sum = (a, b, ...nbs) => {
+  let result = a + b;
+  for (const n of nbs) {
+    result += n;
+  }
+  return result;
+};
+
+console.log(sum(1, 2, 3, 4)); // 10
 

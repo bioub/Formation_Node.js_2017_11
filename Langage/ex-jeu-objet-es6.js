@@ -1,3 +1,4 @@
+/*
 function getRandom() {
   return Math.random();
 }
@@ -17,6 +18,28 @@ function getRandomIntInclusive(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
 }
+*/
+
+// Mauvaise pratique (en JS moderne pas de Tree Shaking)
+const random = {
+  get() {
+    return Math.random();
+  },
+  getArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+  },
+  getInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+  },
+  getIntInclusive(min = 0, max = 100) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+  },
+};
+
 
 // 1 - Mettre tous les fonctions aléatoires dans un objet
 // avec la syntaxe object literal (ES6 method properties)
@@ -24,47 +47,71 @@ function getRandomIntInclusive(min, max) {
 
 const readline = require('readline');
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
 
-const entierAlea = getRandomIntInclusive(0, 100);
-const essais = [];
+class Jeu {
+  constructor(options = {}) {
+    /*
+    options = options || {};
+    const min = options.min || 0;
+    const max = (options.max !== undefined) ? options.max : 100;
+    */
+    // Créé 2 variable autreMin et autreMax qui reçoivent les props min
+    // et max respectivement
+    // const {min: autreMin, max: autreMax} = options;
 
-const jouer = () => {
-  if (essais.length) {
-    console.log('Vous avez déjà joué : ' + essais.join(' - '));
+    // Avec des valeurs par défaut
+    // const {min: autreMin = 0, max: autreMax = 100} = options;
+
+    // Avec des variables qui ont le meme nom que les props
+    // const {min: min = 0, max: max = 100} = options;
+
+    // Avec shortand prop
+    const {min = 0, max = 100} = options;
+
+    this._rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+
+    this._entierAlea = random.getIntInclusive(min, max);
+    this._essais = [];
   }
-
-  rl.question('Quel est le nombre entier ? ', answer => {
-    const entierSaisi = parseInt(answer);
-
-    if (isNaN(entierSaisi)) {
-      // PAS DE MOT CLE throw (car callback async)
-      console.log('Erreur : il faut saisir un nombre');
-      return jouer();
+  jouer() {
+    if (this._essais.length) {
+      console.log('Vous avez déjà joué : ' + this._essais.join(' - '));
     }
 
-    essais.push(entierSaisi); // Muable
-    // essais = [...essais]; // Immuable
+    this._rl.question('Quel est le nombre entier ? ', answer => {
+      const entierSaisi = parseInt(answer);
 
-    if (entierSaisi < entierAlea) {
-      console.log('Trop petit');
-      return jouer();
-    }
+      if (isNaN(entierSaisi)) {
+        // PAS DE MOT CLE throw (car callback async)
+        console.log('Erreur : il faut saisir un nombre');
+        return this.jouer();
+      }
 
-    if (entierSaisi > entierAlea) {
-      console.log('Trop grand');
-      return jouer();
-    }
+      this._essais.push(entierSaisi); // Muable
+      // essais = [...essais]; // Immuable
 
-    console.log('Gagné')
-    rl.close();
-  });
+      if (entierSaisi < this._entierAlea) {
+        console.log('Trop petit');
+        return this.jouer();
+      }
+
+      if (entierSaisi > this._entierAlea) {
+        console.log('Trop grand');
+        return this.jouer();
+      }
+
+      console.log('Gagné')
+      this._rl.close();
+    });
+  }
 }
 
-jouer();
+const jeu = new Jeu();
+jeu.jouer();
+
 
 // 2 - Créer une fonction constructeur / class Jeu
 // const jeu = new Jeu();

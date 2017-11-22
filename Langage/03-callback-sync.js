@@ -4,6 +4,7 @@ nbs.forEach((...args) => {
   console.log(args);
 });
 
+// Programmation fonctionnelle (ES5, IE9+)
 nbs.filter(nb => nb % 2 === 0)
    .map(nb => nb * 2)
    .forEach(nb => console.log(nb));

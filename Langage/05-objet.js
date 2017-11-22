@@ -14,7 +14,7 @@ console.log(typeof console); // object
 
 // 2 - Objets extensibles
 console.log(Math.sum); // undefined
-Math.sum = (a, b) => a + b;
+Math.sum = (a, b) => a + b; // Mauvaise pratique d'étendre les API standard
 console.log(Math.sum(1, 2)); // 3
 
 delete Math.sum;
@@ -28,7 +28,12 @@ const prop = 'PI';
 console['log'](Math[prop]); // 3.141592653589793
 
 // 4 - Créer un objet directement (object literal)
-const coords2d = {
+const coords2d1 = {
+  x: 10,
+  y: 20,
+};
+
+const coords2d2 = {
   x: 10,
   y: 20,
 };
