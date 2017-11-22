@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "async": "^2.6.0",
+    "bluebird": "^3.5.1",
+    "chalk": "^2.3.0",
+    "fs-extra": "^4.0.2"
+  },
+  "devDependencies": {}
+}

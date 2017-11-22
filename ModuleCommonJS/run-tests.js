@@ -1,9 +1,9 @@
 const fs = require('fs');
 
-const fichiersTests = fs.readdirSync('test');
+const fichiersTests = fs.readdirSync(__dirname + '/test');
 
 for (let f of fichiersTests) {
   if (f.startsWith('test-')) {
-    require('./test/' + f);
+    require(__dirname + '/test/' + f);
   }
 }

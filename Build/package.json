@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "http-server": "^0.10.0"
+  },
+  "scripts": {
+    "serve:dev": "hs src",
+    "serve:prod": "hs dist"
+  }
+}
