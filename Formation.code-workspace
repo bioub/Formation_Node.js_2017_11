@@ -2,6 +2,12 @@
 	"folders": [
 		{
 			"path": "Langage"
+		},
+		{
+			"path": "ModuleCommonJS"
+		},
+		{
+			"path": "JeuFinal"
 		}
 	]
 }

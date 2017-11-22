@@ -21,6 +21,8 @@ function getRandomIntInclusive(min, max) {
 */
 
 // Mauvaise pratique (en JS moderne pas de Tree Shaking)
+
+// random.js
 const random = {
   get() {
     return Math.random();
@@ -45,8 +47,8 @@ const random = {
 // avec la syntaxe object literal (ES6 method properties)
 // const entierAlea = random.getIntInclusive(0, 100);
 
+// jeu.js
 const readline = require('readline');
-
 
 class Jeu {
   constructor(options = {}) {
@@ -109,6 +111,7 @@ class Jeu {
   }
 }
 
+// main.js
 const jeu = new Jeu();
 jeu.jouer();
 
