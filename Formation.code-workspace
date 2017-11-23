@@ -20,6 +20,12 @@
 		},
 		{
 			"path": "JeuFinalModuleES6"
+		},
+		{
+			"path": "ExpressREST"
+		},
+		{
+			"path": "ExpressHTML"
 		}
 	]
 }
