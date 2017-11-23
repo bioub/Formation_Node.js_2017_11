@@ -1,3 +1,5 @@
+// Module IIFE
+// Immediately Invoked Function Expression
 (function(global, Horloge) {
   'use strict';
 

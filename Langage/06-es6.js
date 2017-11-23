@@ -56,3 +56,21 @@ const sum = (a, b, ...nbs) => {
 
 console.log(sum(1, 2, 3, 4)); // 10
 
+// Destructurer
+const coords3d = {x: 10, y: 20};
+const {x: varX, y: y, z = 0} = coords3d;
+console.log(varX); // 10
+console.log(y); // 20
+console.log(z); // 0
+
+const [un, , trois, quatre = 4] = [1, 2, 3];
+const [one, ...rest] = [1, 2, 3, 4];
+
+// SPREAD operator
+const nbs = [2, 3, 4];
+const autres = [1, ...nbs, 5];
+const clone = [...nbs]; // Pas récursif
+// (si récursif Lodash.cloneDeep)
+
+// ESNext REST / SPREAD sur des objets
+const cloneCoords = {...coords3d};

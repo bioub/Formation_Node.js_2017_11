@@ -10,6 +10,6 @@ try {
   console.log('Les tests de maths passent');
 }
 catch (err) {
-  console.log('Les tests de maths échouent');
+  console.log('Les tests de maths échouent : ' + err.message);
   process.exit(1);
 }

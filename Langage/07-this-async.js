@@ -8,13 +8,13 @@ var contactES3 = {
     setTimeout(function() {
       console.log('ES3 Bonjour je m\'appelle ' + that.prenom);
     }, 100);
-  }
+  },
 };
 
 contactES3.helloSync();
 contactES3.helloAsync();
 
-var contactES5 = {
+const contactES5 = {
   prenom: 'Romain',
   helloSync: function() {
     console.log('ES5 Bonjour je m\'appelle ' + this.prenom);
@@ -48,6 +48,7 @@ var contactES6 = {
   },
   helloAsync: function() {
     setTimeout(() => {
+      // pas arguments ni this dans les fonctions fléchées
       console.log('ES6 Bonjour je m\'appelle ' + this.prenom);
     }, 100);
   }

@@ -1,3 +1,52 @@
+const fs = require('fs-extra');
+const path = require('path');
+const del = require('del');
+const md5 = require('md5');
+const UglifyJS = require('uglify-es');
+
+const distPath = path.resolve(__dirname, 'dist');
+const srcPath = path.resolve(__dirname, 'src');
+const horlogeJsPath = path.resolve(srcPath, 'js', 'horloge.js');
+const indexJsPath = path.resolve(srcPath, 'js', 'index.js');
+const indexHtmlPath = path.resolve(srcPath, 'index.html');
+const indexHtmlDistPath = path.resolve(distPath, 'index.html');
+const appJsDistPath = path.resolve(distPath, 'app.js');
+
+(async () => {
+  try {
+    await del(distPath);
+    console.log(`${distPath} deleted`);
+
+    await fs.mkdir(distPath);
+    console.log(`${distPath} created`);
+
+    let buffer = await fs.readFile(horlogeJsPath);
+    let content = UglifyJS.minify(buffer.toString()).code;
+    await fs.appendFile(appJsDistPath, content);
+    console.log(`${horlogeJsPath} built`);
+
+    buffer = await fs.readFile(indexJsPath);
+    content = UglifyJS.minify(buffer.toString()).code;
+    await fs.appendFile(appJsDistPath, content);
+    console.log(`${indexJsPath} built`);
+
+    buffer = await fs.readFile(appJsDistPath);
+    const checksum = md5(buffer.toString());
+    const newName = `app.${checksum}.js`;
+    await fs.move(appJsDistPath, path.resolve(distPath, newName));
+
+    buffer = await fs.readFile(indexHtmlPath);
+    let contentHtml = buffer.toString();
+    contentHtml = contentHtml.replace('<script src="./js/horloge.js"></script>', '');
+    contentHtml = contentHtml.replace('<script src="./js/index.js"></script>', `<script src="./${newName}"></script>`);
+    await fs.appendFile(indexHtmlDistPath, contentHtml);
+    console.log(`${indexHtmlPath} built`);
+  }
+  catch (err) {
+    console.log(err.message)
+  }
+})();
+
 
 // Ecrire un script de build dans le style de votre choix
 // (synchrone, asynchrone, promise, async/await)

@@ -14,6 +14,12 @@
 		},
 		{
 			"path": "Build"
+		},
+		{
+			"path": "BuildWebpack"
+		},
+		{
+			"path": "JeuFinalModuleES6"
 		}
 	]
 }

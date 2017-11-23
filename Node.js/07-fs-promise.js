@@ -2,7 +2,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const util = require('util');
 
-const mkdir = util.promisify(fs.appendFile);
+const mkdir = util.promisify(fs.mkdir);
 
 const dirPath = path.resolve(__dirname, 'logs');
 const filePath = path.resolve(dirPath, 'app.log');
@@ -22,8 +22,9 @@ function log(filePath, msg) {
 console.time('Total');
 console.time('Thread Indispo');
 
-fs.stat(dirPath)
-  .catch(() => mkdir(dirPath))
+// fs.stat(dirPath)
+//   .catch(() => mkdir(dirPath))
+fs.ensureDir(dirPath)
   .then(() => log(filePath, 'Ligne 1'))
   .then(() => log(filePath, 'Ligne 2'))
   .then(() => log(filePath, 'Ligne 3'))

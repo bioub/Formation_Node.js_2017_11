@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "chalk": "^2.3.0"
+  },
+  "scripts": {
+    "start": "node --experimental-modules index.mjs"
+  }
+}

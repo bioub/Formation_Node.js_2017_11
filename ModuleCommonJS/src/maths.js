@@ -1,3 +1,4 @@
+// Module CommonJS
 // (function (exports, require, module, __filename, __dirname) {
 
 const convertToNumber = val => Number(val);
