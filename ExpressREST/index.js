@@ -1,72 +1,21 @@
-const express = require('express');
+const http = require('http');
+// const https = require('https');
+const app = require('./app');
 
-const app = express();
 
-const contacts = [{
-  prenom: 'Jean',
-  nom: 'Dupont',
-  id: 123,
-}, {
-  prenom: 'Eric',
-  nom: 'Martin',
-  id: 456,
-}];
+const port = process.env.PORT || '8080';
+const hostname = 'localhost';
 
-// Liste des contacts
-app.get('/api/contacts', (req, res, next) => {
-  res.json(contacts);
+
+const server = http.createServer(app);
+// const server = https.createServer({},app);
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.log(`Erreur : Le port ${port} est déjà occupé`);
+  }
 });
 
-// Détail d'un contact
-app.get('/api/contacts/:contactId', (req, res, next) => {
-  const id = Number(req.params.contactId); // string
-
-  if (Number.isNaN(id)) {
-    res.statusCode = 400;
-    return res.json({
-      msg: 'id must be an number'
-    });
-  }
-
-  const contact = contacts.find(c => c.id === id);
-
-  if (!contact) {
-    res.statusCode = 404;
-    return res.json({
-      msg: 'contact not found'
-    });
-  }
-
-  res.json(contact);
-});
-
-// Supprimer un contact
-// DELETE /api/contacts/123 (pour supprimer le 123)
-app.delete('/api/contacts/:contactId', (req, res, next) => {
-  const id = Number(req.params.contactId); // string
-
-  if (Number.isNaN(id)) {
-    res.statusCode = 400;
-    return res.json({
-      msg: 'id must be an number'
-    });
-  }
-
-  const contact = contacts.find(c => c.id === id);
-
-  if (!contact) {
-    res.statusCode = 404;
-    return res.json({
-      msg: 'contact not found'
-    });
-  }
-
-  const i = contacts.indexOf(contact);
-  contacts.splice(i, 1);
-
-  res.json(contact);
-});
-
-app.listen(8080, () => {
-  console.log('Serveur http://localhost:8080/')
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
 });

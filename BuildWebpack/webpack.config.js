@@ -8,10 +8,11 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.[hash].js',
   },
+  devtool: 'source-map',
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
-    new UglifyJsPlugin(),
+    // new UglifyJsPlugin(),
   ]
 };

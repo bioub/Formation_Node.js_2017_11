@@ -12,35 +12,74 @@ const indexHtmlPath = path.resolve(srcPath, 'index.html');
 const indexHtmlDistPath = path.resolve(distPath, 'index.html');
 const appJsDistPath = path.resolve(distPath, 'app.js');
 
+async function buildJs() {
+  try {
+    const buffers = await Promise.all([
+      fs.readFile(horlogeJsPath),
+      fs.readFile(indexJsPath),
+    ]);
+
+    for (let buffer of buffers) {
+      let content = UglifyJS.minify(buffer.toString()).code;
+      await fs.appendFile(appJsDistPath, content);
+    }
+    console.log('JS concatenated & minified');
+    return Promise.resolve();
+  }
+  catch (err) {
+    console.log(err.message);
+    return Promise.reject();
+  }
+}
+
+async function buildHtml() {
+  try {
+    const buffer = await fs.readFile(indexHtmlPath);
+    let contentHtml = buffer.toString();
+    contentHtml = contentHtml.replace('<script src="./js/horloge.js"></script>', '');
+    contentHtml = contentHtml.replace('<script src="./js/index.js"></script>', `<script src="./app.js"></script>`);
+    await fs.appendFile(indexHtmlDistPath, contentHtml);
+    console.log(`${indexHtmlPath} built`);
+    return Promise.resolve();
+  }
+  catch (err) {
+    console.log(err.message);
+    return Promise.reject();
+  }
+}
+
+async function renameJsChecksum() {
+  try {
+    let buffer = await fs.readFile(appJsDistPath);
+    const checksum = md5(buffer.toString());
+    const newName = `app.${checksum}.js`;
+    await fs.move(appJsDistPath, path.resolve(distPath, newName));
+
+    buffer = await fs.readFile(indexHtmlDistPath);
+    let contentHtml = buffer.toString();
+    contentHtml = contentHtml.replace('<script src="./app.js"></script>', `<script src="./${newName}"></script>`);
+    await fs.writeFile(indexHtmlDistPath, contentHtml);
+    console.log(`JS renamed app.${checksum}.js`);
+  }
+  catch (err) {
+    console.log(err.message)
+  }
+}
+
 (async () => {
   try {
-    await del(distPath);
+    const paths = await del(distPath);
     console.log(`${distPath} deleted`);
 
     await fs.mkdir(distPath);
     console.log(`${distPath} created`);
 
-    let buffer = await fs.readFile(horlogeJsPath);
-    let content = UglifyJS.minify(buffer.toString()).code;
-    await fs.appendFile(appJsDistPath, content);
-    console.log(`${horlogeJsPath} built`);
+    await Promise.all([
+      buildJs(),
+      buildHtml(),
+    ]);
 
-    buffer = await fs.readFile(indexJsPath);
-    content = UglifyJS.minify(buffer.toString()).code;
-    await fs.appendFile(appJsDistPath, content);
-    console.log(`${indexJsPath} built`);
-
-    buffer = await fs.readFile(appJsDistPath);
-    const checksum = md5(buffer.toString());
-    const newName = `app.${checksum}.js`;
-    await fs.move(appJsDistPath, path.resolve(distPath, newName));
-
-    buffer = await fs.readFile(indexHtmlPath);
-    let contentHtml = buffer.toString();
-    contentHtml = contentHtml.replace('<script src="./js/horloge.js"></script>', '');
-    contentHtml = contentHtml.replace('<script src="./js/index.js"></script>', `<script src="./${newName}"></script>`);
-    await fs.appendFile(indexHtmlDistPath, contentHtml);
-    console.log(`${indexHtmlPath} built`);
+    renameJsChecksum();
   }
   catch (err) {
     console.log(err.message)

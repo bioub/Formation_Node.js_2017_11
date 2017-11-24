@@ -7,7 +7,9 @@ function createUser(prenom) {
   // TODO insert prenom in database
 
 
-  ee.emit('user.created', prenom);
+  process.nextTick(() => {
+    ee.emit('user.created', prenom);
+  });
 }
 
 ee.on('user.created', (prenom) => {

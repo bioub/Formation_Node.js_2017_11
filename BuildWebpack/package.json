@@ -8,5 +8,10 @@
   "scripts": {
     "build:dev": "webpack",
     "serve:dev": "webpack-dev-server"
+  },
+  "dependencies": {
+    "date-fns": "^1.29.0",
+    "luxon": "^0.2.0",
+    "moment": "^2.19.2"
   }
 }

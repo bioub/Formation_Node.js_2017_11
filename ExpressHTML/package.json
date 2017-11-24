@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "SET PORT=80 & node ./bin/www",
-    "start:dev": "SET DEBUG=expresshtml:* & nodemon ./bin/www"
+    "start:dev": "SET DEBUG=expresshtml:* & nodemon -e ejs,js ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.18.2",

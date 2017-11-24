@@ -1,3 +1,6 @@
+import format from 'date-fns/format'
+export const myFormat = 'HH:mm:ss';
+
 export class Horloge {
   /**
    * @constructor
@@ -9,7 +12,7 @@ export class Horloge {
 
   _render() {
     const now = new Date();
-    this._container.innerText = now.toLocaleTimeString();
+    this._container.innerText = format(new Date(), myFormat);
   }
 
   start() {
