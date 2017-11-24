@@ -1,28 +1,15 @@
-const contacts = [{
-  prenom: 'Jean',
-  nom: 'Dupont',
-  id: 123,
-}, {
-  prenom: 'Eric',
-  nom: 'Martin',
-  id: 456,
-}];
+const mongoose = require('mongoose');
+const Contact = mongoose.model('contacts', {
+  prenom: {
+    type: String,
+    required: [true, 'Le prénom est obligatoire'],
+  },
+  nom: String,
+});
 
-exports.getList = () => contacts;
-exports.getById = (id) => contacts.find(c => c.id === Number(id));
-exports.removeById = (id) => {
-  const contact = contacts.find(c => c.id === Number(id));
 
-    if (!contact) {
-      return null;
-    }
-
-    const i = contacts.indexOf(contact);
-    contacts.splice(i, 1);
-
-    return contact;
-};
-exports.create = (contact) => {
-  contact.id = contacts[contacts.length-1].id + 1;
-  contacts.push(contact);
-};
+exports.getList = () => Contact.find();
+exports.getById = (id) => Contact.findById(id);
+exports.removeById = (id) => Contact.findByIdAndRemove(id);
+exports.update = (contact) => Contact.findByIdAndUpdate(contact.id, contact);
+exports.create = (contact) => Contact.create(contact);

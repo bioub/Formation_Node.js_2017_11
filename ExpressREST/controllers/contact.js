@@ -1,35 +1,55 @@
 var contactService = require('../models/contact');
 
-exports.list = (req, res, next) => {
-  const contacts = contactService.getList();
-  res.json(contacts);
-};
-
-exports.show = (req, res, next) => {
-  const contact = contactService.getById(req.params.id);
-
-  if (!contact) {
-    return next();
+exports.list = async (req, res, next) => {
+  try {
+    const contacts = await contactService.getList();
+    res.json(contacts);
   }
-
-  res.json(contact);
-};
-
-exports.delete = (req, res, next) => {
-  const contact = contactService.removeById(req.params.id);
-
-  if (!contact) {
-    return next();
+  catch (err) {
+    next(err);
   }
-
-  res.json(contact);
 };
 
-exports.add = (req, res, next) => {
-  const contact = req.body; // JSON.parse(body);
+exports.show = async (req, res, next) => {
+  try {
+    const contact = await contactService.getById(req.params.id);
 
-  contactService.create(contact);
+    if (!contact) {
+      return next();
+    }
 
-  res.statusCode = 201;
-  res.json(contact);
+    res.json(contact);
+  }
+  catch (err) {
+    next(err);
+  }
+};
+
+exports.delete = async (req, res, next) => {
+  try {
+    const contact = await contactService.removeById(req.params.id);
+
+    if (!contact) {
+      req.msg = 'Contact not found';
+      return next();
+    }
+
+    res.json(contact);
+  }
+  catch (err) {
+    next(err);
+  }
+};
+
+exports.add = async (req, res, next) => {
+  try {
+    const contact =await contactService.create(req.body);
+
+    res.statusCode = 201;
+    res.json(contact);
+  }
+  catch (err) {
+    res.statusCode = 400;
+    next(err);
+  }
 };
