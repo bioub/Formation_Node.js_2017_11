@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const contactCtrl = require('../controllers/contact')
 const router = express.Router();
 
@@ -6,6 +7,12 @@ const router = express.Router();
 // Liste des contacts
 router.get('/',
   contactCtrl.list,
+);
+
+// Ajouter un contact
+router.post('/',
+  bodyParser.json(),
+  contactCtrl.add,
 );
 
 // Détail d'un contact

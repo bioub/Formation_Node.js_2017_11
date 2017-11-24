@@ -22,3 +22,7 @@ exports.removeById = (id) => {
 
     return contact;
 };
+exports.create = (contact) => {
+  contact.id = contacts[contacts.length-1].id + 1;
+  contacts.push(contact);
+};
